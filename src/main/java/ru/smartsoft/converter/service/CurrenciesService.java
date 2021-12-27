@@ -31,7 +31,10 @@ public class CurrenciesService {
     @Autowired
     private CurrenciesValueRepository currenciesValueRepository;
 
-    @Scheduled(fixedRate = 1_000_000_000)
+    /**
+     * Scheduling triggers every 6 hours
+     */
+    @Scheduled(cron = "* * */6 * * ?")
     private void connectToBank() throws Exception{
         String resourceUrl = "http://www.cbr.ru/scripts/XML_daily.asp";
         ResponseEntity<String> response = applicationConfiguration.getRestTemplate().getForEntity(resourceUrl, String.class);
