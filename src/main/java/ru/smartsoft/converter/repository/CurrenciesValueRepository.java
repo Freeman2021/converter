@@ -10,4 +10,5 @@ import java.util.Date;
 public interface CurrenciesValueRepository extends JpaRepository<CurrencyValue, Long> {
 
     boolean existsByDate(Date date);
+
 }

@@ -32,7 +32,7 @@ public class CurrenciesService {
     private CurrenciesValueRepository currenciesValueRepository;
 
     /**
-     * Scheduling triggers every 6 hours
+     * Scheduling triggers every 6 hours starting at 00am
      */
     @Scheduled(cron = "* * */6 * * ?")
     private void connectToBank() throws Exception{

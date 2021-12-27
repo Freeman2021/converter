@@ -12,4 +12,5 @@ public interface CurrenciesRepository extends JpaRepository<Currency, Long> {
 
     @Query("SELECT COUNT(*) FROM Currency")
     int countAll();
+
 }
