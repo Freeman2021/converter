@@ -8,5 +8,5 @@ CREATE TABLE conversion_history (
 	CONSTRAINT conversion_history_pkey PRIMARY KEY (id)
 );
 
-ALTER TABLE conversion_history ADD CONSTRAINT fk4acp8fv9bd0irkpeg91wxtewk FOREIGN KEY (source_currency_id) REFERENCES currencies(id);
-ALTER TABLE conversion_history ADD CONSTRAINT fksovk2oismyuve1x5i6fdtxaoe FOREIGN KEY (target_currency_id) REFERENCES currencies(id)
+ALTER TABLE conversion_history ADD CONSTRAINT fk4acp8fv9bd0irkpeg91wxtewk FOREIGN KEY (source_currency_id) REFERENCES currency(id);
+ALTER TABLE conversion_history ADD CONSTRAINT fksovk2oismyuve1x5i6fdtxaoe FOREIGN KEY (target_currency_id) REFERENCES currency(id)
