@@ -15,6 +15,8 @@
 	<description>Demo project for SmartSoft</description>
 	<properties>
 		<java.version>17</java.version>
+		<cxf.version>3.5.0</cxf.version>
+		<cxf-xjc-plugin>3.3.1</cxf-xjc-plugin>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -54,6 +56,17 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-core</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-xjc-plugin</artifactId>
+			<version>${cxf-xjc-plugin}</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -69,6 +82,28 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-xjc-plugin</artifactId>
+				<version>${cxf-xjc-plugin}</version>
+				<executions>
+					<execution>
+						<id>generate-sources</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<sourceRoot>${project.build.directory}/generated-sources/cxf</sourceRoot>
+							<xsdOptions>
+								<xsdOption>
+									<xsd>${basedir}/src/main/resources/ValCurs.xsd</xsd>
+								</xsdOption>
+							</xsdOptions>
+						</configuration>
+						<goals>
+							<goal>xsdtojava</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
