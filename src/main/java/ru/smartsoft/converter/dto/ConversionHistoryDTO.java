@@ -1,17 +1,12 @@
 package ru.smartsoft.converter.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import ru.smartsoft.converter.entity.ConversionHistory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Builder
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ConversionHistoryDTO {
 
     private BigDecimal sourceCurrencyAmount;
@@ -24,4 +19,11 @@ public class ConversionHistoryDTO {
 
     private String targetCurrencyCharCode;
 
+    public ConversionHistoryDTO(ConversionHistory conversionHistory) {
+        this.sourceCurrencyAmount = conversionHistory.getSourceCurrencyAmount();
+        this.targetCurrencyAmount = conversionHistory.getTargetCurrencyAmount();
+        this.date = conversionHistory.getDate();
+        this.sourceCurrencyCharCode = conversionHistory.getSourceCurrency().getCharCode();
+        this.targetCurrencyCharCode = conversionHistory.getTargetCurrency().getCharCode();
+    }
 }

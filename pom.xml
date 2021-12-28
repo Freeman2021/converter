@@ -17,6 +17,7 @@
 		<java.version>17</java.version>
 		<cxf.version>3.5.0</cxf.version>
 		<cxf-xjc-plugin.version>3.3.1</cxf-xjc-plugin.version>
+		<io.springfox.version>2.9.2</io.springfox.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -65,6 +66,16 @@
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-xjc-plugin</artifactId>
 			<version>${cxf-xjc-plugin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${io.springfox.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${io.springfox.version}</version>
 		</dependency>
 	</dependencies>
 

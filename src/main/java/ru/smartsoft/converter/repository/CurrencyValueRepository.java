@@ -5,10 +5,9 @@ import org.springframework.stereotype.Repository;
 import ru.smartsoft.converter.entity.CurrencyValue;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Repository
-public interface CurrenciesValueRepository extends JpaRepository<CurrencyValue, Long> {
+public interface CurrencyValueRepository extends JpaRepository<CurrencyValue, Long> {
 
     boolean existsByDate(LocalDate date);
 

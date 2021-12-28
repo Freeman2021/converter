@@ -1,18 +1,17 @@
 package ru.smartsoft.converter.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import ru.smartsoft.converter.entity.Currency;
 
-@Builder
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class CurrencyDTO {
 
     private String charCode;
 
     private String name;
 
+    public CurrencyDTO(Currency currency) {
+        this.charCode = currency.getCharCode();
+        this.name = currency.getName();
+    }
 }

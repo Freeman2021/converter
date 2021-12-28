@@ -38,5 +38,5 @@ public class Currency {
     private long nominal;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private CurrencyValue value;
+    private CurrencyValue currencyValue;
 }

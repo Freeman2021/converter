@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 import ru.smartsoft.converter.entity.ConversionHistory;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Repository

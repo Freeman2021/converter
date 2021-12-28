@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 import ru.smartsoft.converter.configuration.ApplicationConfiguration;
 import ru.smartsoft.converter.entity.Currency;
 import ru.smartsoft.converter.entity.CurrencyValue;
-import ru.smartsoft.converter.repository.CurrenciesRepository;
-import ru.smartsoft.converter.repository.CurrenciesValueRepository;
+import ru.smartsoft.converter.repository.CurrencyRepository;
+import ru.smartsoft.converter.repository.CurrencyValueRepository;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -26,16 +27,21 @@ public class CurrenciesService {
     private ApplicationConfiguration applicationConfiguration;
 
     @Autowired
-    private CurrenciesRepository currenciesRepository;
+    private CurrencyRepository currencyRepository;
 
     @Autowired
-    private CurrenciesValueRepository currenciesValueRepository;
+    private CurrencyValueRepository currencyValueRepository;
+
+    @PostConstruct
+    public void init() throws Exception {
+        connectToBank();
+    }
 
     /**
-     * Scheduling triggers every 6 hours starting at 00am
+     * Scheduling triggers every 3 hours starting at 00am
      */
-    @Scheduled(cron = "* * */6 * * ?")
-    private void connectToBank() throws Exception{
+    @Scheduled(cron = "* * */3 * * ?")
+    private void connectToBank() throws Exception {
         String resourceUrl = "http://www.cbr.ru/scripts/XML_daily.asp";
         ResponseEntity<String> response = applicationConfiguration.getRestTemplate().getForEntity(resourceUrl, String.class);
 
@@ -49,23 +55,23 @@ public class CurrenciesService {
     private void saveCurrencies(ValCurs valCurs) {
         LocalDate localDate = LocalDate.parse(valCurs.getDate(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
 
-        if (currenciesRepository.countAll() == 0) {
+        if (currencyRepository.countAll() == 0) {
             for (ValCurs.Valute valute : valCurs.getValute()) {
                 CurrencyValue currencyValue = buildCurrencyValue(localDate, valute);
                 Currency currency = Currency.builder()
                         .charCode(valute.getCharCode())
                         .name(valute.getName())
                         .nominal(valute.getNominal())
-                        .value(currencyValue)
+                        .currencyValue(currencyValue)
                         .build();
-                currenciesRepository.save(currency);
+                currencyRepository.save(currency);
             }
-        } else if (!currenciesValueRepository.existsByDate(localDate)) {
+        } else if (!currencyValueRepository.existsByDate(localDate)) {
             for (ValCurs.Valute valute : valCurs.getValute()){
-                Currency currency = currenciesRepository.findByCharCode(valute.getCharCode());
+                Currency currency = currencyRepository.findByCharCode(valute.getCharCode());
                 CurrencyValue currencyValue = buildCurrencyValue(localDate, valute);
-                currency.setValue(currencyValue);
-                currenciesRepository.save(currency);
+                currency.setCurrencyValue(currencyValue);
+                currencyRepository.save(currency);
             }
         }
     }
