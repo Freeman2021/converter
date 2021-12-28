@@ -17,7 +17,6 @@
 		<java.version>17</java.version>
 		<cxf.version>3.5.0</cxf.version>
 		<cxf-xjc-plugin.version>3.3.1</cxf-xjc-plugin.version>
-		<gson.version>2.8.9</gson.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -67,13 +66,6 @@
 			<artifactId>cxf-xjc-plugin</artifactId>
 			<version>${cxf-xjc-plugin.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>${gson.version}</version>
-		</dependency>
-
-
 	</dependencies>
 
 	<build>

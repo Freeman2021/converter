@@ -12,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Builder
 @Data
@@ -30,5 +30,5 @@ public class CurrencyValue {
     private BigDecimal value;
 
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
 }

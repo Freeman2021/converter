@@ -1,13 +1,15 @@
 package ru.smartsoft.converter.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
-@Getter
+@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConversionHistoryDTO {
@@ -16,7 +18,7 @@ public class ConversionHistoryDTO {
 
     private BigDecimal targetCurrencyAmount;
 
-    private Date date;
+    private LocalDate date;
 
     private String sourceCurrencyCharCode;
 

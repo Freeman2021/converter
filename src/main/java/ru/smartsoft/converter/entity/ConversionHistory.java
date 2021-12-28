@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Builder
 @Data
@@ -35,11 +35,11 @@ public class ConversionHistory {
     private BigDecimal targetCurrencyAmount;
 
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Currency sourceCurrency;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Currency targetCurrency;
 }

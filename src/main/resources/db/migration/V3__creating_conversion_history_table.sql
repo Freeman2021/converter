@@ -1,6 +1,6 @@
 CREATE TABLE conversion_history (
 	id bigserial NOT NULL,
-	"date" timestamp NULL,
+	"date" date NULL,
 	source_currency_amount numeric(19, 2) NULL,
 	target_currency_amount numeric(19, 2) NULL,
 	source_currency_id int8 NULL,

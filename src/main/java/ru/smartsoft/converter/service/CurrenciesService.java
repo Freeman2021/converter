@@ -16,8 +16,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class CurrenciesService {
@@ -46,12 +46,12 @@ public class CurrenciesService {
     }
 
     @Transactional
-    private void saveCurrencies(ValCurs valCurs) throws Exception {
-        Date date = new SimpleDateFormat("dd.MM.yyyy").parse(valCurs.getDate());
+    private void saveCurrencies(ValCurs valCurs) {
+        LocalDate localDate = LocalDate.parse(valCurs.getDate(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
 
         if (currenciesRepository.countAll() == 0) {
             for (ValCurs.Valute valute : valCurs.getValute()) {
-                CurrencyValue currencyValue = buildCurrencyValue(date, valute);
+                CurrencyValue currencyValue = buildCurrencyValue(localDate, valute);
                 Currency currency = Currency.builder()
                         .charCode(valute.getCharCode())
                         .name(valute.getName())
@@ -60,17 +60,17 @@ public class CurrenciesService {
                         .build();
                 currenciesRepository.save(currency);
             }
-        } else if (!currenciesValueRepository.existsByDate(date)) {
+        } else if (!currenciesValueRepository.existsByDate(localDate)) {
             for (ValCurs.Valute valute : valCurs.getValute()){
                 Currency currency = currenciesRepository.findByCharCode(valute.getCharCode());
-                CurrencyValue currencyValue = buildCurrencyValue(date, valute);
+                CurrencyValue currencyValue = buildCurrencyValue(localDate, valute);
                 currency.setValue(currencyValue);
                 currenciesRepository.save(currency);
             }
         }
     }
 
-    private CurrencyValue buildCurrencyValue (Date date, ValCurs.Valute valute) {
+    private CurrencyValue buildCurrencyValue (LocalDate date, ValCurs.Valute valute) {
         return CurrencyValue.builder()
                 .date(date)
                 .value(new BigDecimal(valute.getValue().replaceAll(",", ".")))
