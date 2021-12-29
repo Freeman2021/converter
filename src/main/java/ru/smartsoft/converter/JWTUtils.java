@@ -9,7 +9,7 @@ import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 public final class JWTUtils {
 
-    private final static long TIME = /*3_600_000*/ 20000;
+    private final static long TIME = 3_600_000;
     private final static String SECRET = "HELP_ME_PLEASE";
 
     public static String generateToken(String login, String password) {
