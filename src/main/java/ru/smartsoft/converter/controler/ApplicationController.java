@@ -24,9 +24,6 @@ public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
 
-    @Value("id")
-    private String rrr;
-
     @ApiOperation("Returns list of actual currencies")
     @GetMapping(path = "/currencyList")
     public List<CurrencyDTO> getCurrencies() {

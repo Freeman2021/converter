@@ -24,12 +24,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public SecurityConfiguration(boolean disableDefaults, UserDetailsServiceImpl userDetailsService, PasswordEncoder passwordEncoder) {
-        super(disableDefaults);
-        this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -37,8 +31,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(authenticationFilter())
-                .addFilterBefore(authorizationFilter(), BasicAuthenticationFilter.class);
+                .addFilterBefore(authorizationFilter(), BasicAuthenticationFilter.class)
+                .addFilter(authenticationFilter());
     }
 
     @Override

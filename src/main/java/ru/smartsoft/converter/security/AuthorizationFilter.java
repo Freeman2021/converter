@@ -18,17 +18,22 @@ import java.util.ArrayList;
 public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String token = request.getHeader("token");
 
         if (token != null) {
             if (JWTUtils.isTokenExpired(token)) {
-                response.setStatus(HttpStatus.FORBIDDEN.value());
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
             } else {
-                final String login = JWTUtils.getAudience(token).get(1);
+                if (JWTUtils.isRefreshToken(token)) {
+                    if (JWTUtils.getClaim(token, "login").equals(UserData.LOGIN) && JWTUtils.getClaim(token, "password").equals(UserData.PASSWORD)) {
+                        String newToken = JWTUtils.generateToken(UserData.LOGIN, UserData.PASSWORD);
+                        response.addHeader("token", newToken);
+                    } else {
+                        response.setStatus(HttpStatus.BAD_REQUEST.value());
+                    }
+                }
+                String login = JWTUtils.getClaim(token, "login");
                 if (login != null) {
                     final UsernamePasswordAuthenticationToken authentication
                             = new UsernamePasswordAuthenticationToken(login, null, new ArrayList<>());

@@ -1,32 +1,32 @@
 package ru.smartsoft.converter;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.Clock;
 
+import java.time.Instant;
 import java.util.Date;
-import java.util.List;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 public final class JWTUtils {
 
-    private final static Clock clock = Date::new;
-    private final static int TIME = 60000;
-    private final static String SECRET = "rgyivrenvruoenboge";
+    private final static long TIME = /*3_600_000*/ 20000;
+    private final static String SECRET = "HELP_ME_PLEASE";
 
     public static String generateToken(String login, String password) {
-        final Date createDate = clock.getToday();
         return JWT.create()
-                .withAudience(
-                        login,
-                        password
-                )
-                .withExpiresAt(new Date(createDate.getTime() + TIME))
+                .withClaim("login", login)
+                .withClaim("password", password)
+                .withClaim("refresh-token", Date.from(Instant.now().plusMillis(TIME/2)))
+                .withExpiresAt(Date.from(Instant.now().plusMillis(TIME)))
                 .sign(HMAC512(SECRET.getBytes()));
     }
 
-    public static List<String> getAudience(String token) {
-        return JWT.decode(token).getAudience();
+    public static String getClaim(String token, String claim) {
+        return JWT.decode(token).getClaim(claim).asString();
+    }
+
+    public static boolean isRefreshToken(String token) {
+        return new Date().after(JWT.decode(token).getClaim("refresh-token").asDate());
     }
 
     public static Date getExpirationDate(String token) {
@@ -34,6 +34,6 @@ public final class JWTUtils {
     }
 
     public static boolean isTokenExpired(String token) {
-        return clock.getToday().after(getExpirationDate(token));
+        return new Date().after(getExpirationDate(token));
     }
 }

@@ -13,7 +13,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import ru.smartsoft.converter.JWTUtils;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,9 +26,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             UserData userData = objectMapper.readValue(request.getInputStream(), UserData.class);
-            final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                userData.getLogin(), userData.getPassword()
-            );
+            UsernamePasswordAuthenticationToken token =
+                    new UsernamePasswordAuthenticationToken(userData.getLogin(), userData.getPassword());
             return getAuthenticationManager().authenticate(token);
         } catch (IOException e) {
             throw new InternalAuthenticationServiceException("");
