@@ -1,5 +1,6 @@
 package ru.smartsoft.converter.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import ru.smartsoft.converter.entity.ConversionHistory;
 
@@ -13,6 +14,7 @@ public class ConversionHistoryDTO {
 
     private BigDecimal targetCurrencyAmount;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     private LocalDate date;
 
     private String sourceCurrencyCharCode;
