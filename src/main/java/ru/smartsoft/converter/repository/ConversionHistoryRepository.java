@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface ConversionHistoryRepository extends JpaRepository<ConversionHistory, Long> {
 
-    List<ConversionHistory> findByDateAndSourceCurrencyCharCodeAndTargetCurrencyCharCode(LocalDate date, String sourceCharCode, String targetCharCode) ;
+    List<ConversionHistory> findByDateAndSourceCurrencyCharCodeAndTargetCurrencyCharCode(LocalDate date, String sourceCharCode, String targetCharCode);
+
 }

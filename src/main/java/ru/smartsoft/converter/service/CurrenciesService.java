@@ -2,10 +2,11 @@ package ru.smartsoft.converter.service;
 
 import generated.ValCurs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ru.smartsoft.converter.configuration.ApplicationConfiguration;
+import org.springframework.web.client.RestTemplate;
 import ru.smartsoft.converter.entity.Currency;
 import ru.smartsoft.converter.entity.CurrencyValue;
 import ru.smartsoft.converter.repository.CurrencyRepository;
@@ -24,13 +25,16 @@ import java.time.format.DateTimeFormatter;
 public class CurrenciesService {
 
     @Autowired
-    private ApplicationConfiguration applicationConfiguration;
+    private RestTemplate restTemplate;
 
     @Autowired
     private CurrencyRepository currencyRepository;
 
     @Autowired
     private CurrencyValueRepository currencyValueRepository;
+
+    @Value("${CBRFUrl}")
+    private String resourceUrl;
 
     @PostConstruct
     public void init() throws Exception {
@@ -42,8 +46,7 @@ public class CurrenciesService {
      */
     @Scheduled(cron = "* * */3 * * ?")
     private void connectToBank() throws Exception {
-        String resourceUrl = "http://www.cbr.ru/scripts/XML_daily.asp";
-        ResponseEntity<String> response = applicationConfiguration.getRestTemplate().getForEntity(resourceUrl, String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity(resourceUrl, String.class);
 
         JAXBContext jaxbContext = JAXBContext.newInstance(ValCurs.class);
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
